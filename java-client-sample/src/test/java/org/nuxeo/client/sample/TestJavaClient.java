@@ -20,7 +20,6 @@ package org.nuxeo.client.sample;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +37,6 @@ import org.nuxeo.client.api.objects.Operation;
 import org.nuxeo.client.api.objects.blob.Blob;
 import org.nuxeo.client.api.objects.upload.BatchFile;
 import org.nuxeo.client.api.objects.upload.BatchUpload;
-import org.nuxeo.client.internals.spi.NuxeoClientException;
 import org.nuxeo.common.utils.FileUtils;
 
 public class TestJavaClient {
@@ -88,43 +86,19 @@ public class TestJavaClient {
         assertEquals("Folder created via the REST API", document.get("dc:description"));
 
         // Create a File document by parent id
-        String folderId = document.getId();
-        document = new Document("newFile", "File");
-        document.set("dc:title", "The new file");
-        document.set("dc:description", "File created via the REST API");
-        document = nuxeoClient.repository().createDocumentById(folderId, document);
-        assertNotNull(document);
-        assertEquals("document", document.getEntityType());
-        assertEquals("File", document.getType());
-        assertEquals("/default-domain/workspaces/testWorkspace/newFolder/newFile", document.getPath());
-        assertEquals("The new file", document.getTitle());
-        assertEquals("File created via the REST API", document.get("dc:description"));
+        // TODO
 
         // Get a document by id
-        document = nuxeoClient.repository().fetchDocumentById(document.getId());
-        assertEquals("The new file", document.getTitle());
+        // TODO
 
         // Get a document by path
-        document = nuxeoClient.repository()
-                              .fetchDocumentByPath("/default-domain/workspaces/testWorkspace/newFolder/newFile");
-        assertEquals("The new file", document.getTitle());
+        // TODO
 
         // Update a document
-        document.set("dc:title", "The updated file");
-        document.set("dc:description", "File updated via the REST API");
-        document = nuxeoClient.repository().updateDocument(document);
-        assertEquals("The updated file", document.getTitle());
-        assertEquals("File updated via the REST API", document.get("dc:description"));
+        // TODO
 
         // Delete a document
-        nuxeoClient.repository().deleteDocument(document.getId());
-        try {
-            nuxeoClient.repository().fetchDocumentById(document.getId());
-            fail();
-        } catch (NuxeoClientException e) {
-            assertEquals(404, e.getStatus());
-
-        }
+        // TODO
     }
 
     @Test
@@ -139,14 +113,10 @@ public class TestJavaClient {
         assertEquals(3, documents.size());
 
         // Get all the File documents
-        query = "select * from Document where ecm:primaryType = 'File' and ecm:isCheckedInVersion = 0";
-        documents = nuxeoClient.repository().query(query, "10", "0", "50", "ecm:path", "asc", null);
-        assertEquals(2, documents.size());
+        // TODO
 
         // Content of a given Folder, using a page provider
-        nuxeoClient.repository().queryByProvider("document_content", "10", "0", "50", "ecm:path", "asc",
-                testWorkspaceId);
-        assertEquals(2, documents.size());
+        // TODO
     }
 
     @Test
@@ -158,10 +128,7 @@ public class TestJavaClient {
                 ((Map<String, Object>) nuxeoClient.getConverterFactory().readJSON(response, Map.class)).get("id"));
 
         // Fetch a document
-        Document document = (Document) nuxeoClient.automation("Repository.GetDocument")
-                                                  .param("value", "/default-domain/workspaces/testWorkspace")
-                                                  .execute();
-        assertEquals("Test Workspace", document.getTitle());
+        // TODO
     }
 
     @Test
@@ -175,12 +142,8 @@ public class TestJavaClient {
         nuxeoClient.repository().createDocumentById(testWorkspaceId, new Document("file1", "File"));
         nuxeoClient.repository().createDocumentById(testWorkspaceId, new Document("file2", "File"));
 
-        // Check enrichers on a document
-        Document document = nuxeoClient.enrichers("breadcrumb", "children")
-                                       .repository()
-                                       .fetchDocumentById(testWorkspaceId);
-        assertNotNull(document.getContextParameters().get("breadcrumb"));
-        assertNotNull(document.getContextParameters().get("children"));
+        // Check breadcrumb and children enrichers on a document
+        // TODO
     }
 
     @Test
